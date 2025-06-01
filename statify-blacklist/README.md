@@ -1,7 +1,7 @@
 # Statify Filter #
 * Contributors:      stklcode
 * Requires at least: 4.7
-* Tested up to:      6.7
+* Tested up to:      6.8
 * Requires PHP:      5.5
 * Stable tag:        1.7.2
 * License:           GPLv2 or later
@@ -14,7 +14,7 @@ A filter extension for the famous [Statify](https://wordpress.org/plugins/statif
 
 This plugin adds customizable filters to Statify to allow blocking of referer spam or internal interactions.
 
-### Features ##
+### Features ###
 
 #### Referer Filter ####
 Add a list of domains (for simplicity only second-level, e.g. _example.com_ which blocks _everything.example.com_).
