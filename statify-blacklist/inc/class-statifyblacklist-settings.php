@@ -20,7 +20,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function register_settings() {
+	public static function register_settings(): void {
 		register_setting(
 			'statify-blacklist',
 			'statify-blacklist',
@@ -34,7 +34,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 		add_settings_section(
 			'statifyblacklist-referer',
 			__( 'Referer filter', 'statify-blacklist' ),
-			null,
+			array( __CLASS__, 'section_referer' ),
 			'statify-blacklist'
 		);
 		add_settings_field(
@@ -72,7 +72,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 		add_settings_section(
 			'statifyblacklist-target',
 			__( 'Target filter', 'statify-blacklist' ),
-			null,
+			array( __CLASS__, 'section_target' ),
 			'statify-blacklist'
 		);
 		add_settings_field(
@@ -110,7 +110,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 		add_settings_section(
 			'statifyblacklist-ip',
 			__( 'IP filter', 'statify-blacklist' ),
-			null,
+			array( __CLASS__, 'section_ip' ),
 			'statify-blacklist'
 		);
 		add_settings_field(
@@ -133,7 +133,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 		add_settings_section(
 			'statifyblacklist-ua',
 			__( 'User agent filter', 'statify-blacklist' ),
-			null,
+			array( __CLASS__, 'section_ua' ),
 			'statify-blacklist'
 		);
 		add_settings_field(
@@ -166,7 +166,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function create_settings_page() {
+	public static function create_settings_page(): void {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Statify Filter', 'statify-blacklist' ); ?></h1>
@@ -221,11 +221,22 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 */
 
 	/**
+	 * Options section for referer filters.
+	 *
+	 * @return void
+	 */
+	public static function section_referer(): void {
+		print '<p>';
+		esc_html_e( 'These filter rules are applied to the origin URL of the request.', 'statify-blacklist' );
+		print '</p>';
+	}
+
+	/**
 	 * Option for activating the live referer filter.
 	 *
 	 * @return void
 	 */
-	public static function option_referer_active() {
+	public static function option_referer_active(): void {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'Activate live filter', 'statify-blacklist' ); ?></legend>
@@ -245,7 +256,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_referer_cron() {
+	public static function option_referer_cron(): void {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'CronJob execution', 'statify-blacklist' ); ?></legend>
@@ -265,7 +276,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_referer_regexp() {
+	public static function option_referer_regexp(): void {
 		?>
 		<select id="statifyblacklist-referer-regexp" name="statify-blacklist[referer][regexp]">
 			<option value="<?php print esc_attr( StatifyBlacklist::MODE_NORMAL ); ?>" <?php selected( StatifyBlacklist::$options['referer']['regexp'], StatifyBlacklist::MODE_NORMAL ); ?>>
@@ -296,7 +307,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_referer_blacklist() {
+	public static function option_referer_blacklist(): void {
 		?>
 		<textarea id="statifyblacklist-referer-blacklist" name="statify-blacklist[referer][blacklist]" cols="40" rows="5"><?php
 		print esc_html( implode( "\r\n", array_keys( StatifyBlacklist::$options['referer']['blacklist'] ) ) );
@@ -312,7 +323,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_target_active() {
+	public static function option_target_active(): void {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'Activate live filter', 'statify-blacklist' ); ?></legend>
@@ -328,11 +339,22 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	}
 
 	/**
+	 * Options section for target filters.
+	 *
+	 * @return void
+	 */
+	public static function section_target(): void {
+		print '<p>';
+		esc_html_e( 'These filter rules are applied to the visited page.', 'statify-blacklist' );
+		print '</p>';
+	}
+
+	/**
 	 * Option for activating cron the target filter.
 	 *
 	 * @return void
 	 */
-	public static function option_target_cron() {
+	public static function option_target_cron(): void {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'CronJob execution', 'statify-blacklist' ); ?></legend>
@@ -352,7 +374,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_target_regexp() {
+	public static function option_target_regexp(): void {
 		?>
 		<select id="statifyblacklist-target-regexp" name="statify-blacklist[target][regexp]">
 			<option value="<?php print esc_attr( StatifyBlacklist::MODE_NORMAL ); ?>" <?php selected( StatifyBlacklist::$options['target']['regexp'], StatifyBlacklist::MODE_NORMAL ); ?>>
@@ -378,7 +400,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_target_blacklist() {
+	public static function option_target_blacklist(): void {
 		?>
 		<textarea id="statifyblacklist-target-blacklist" name="statify-blacklist[target][blacklist]" cols="40" rows="5"><?php
 		print esc_html( implode( "\r\n", array_keys( StatifyBlacklist::$options['target']['blacklist'] ) ) );
@@ -390,11 +412,24 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	}
 
 	/**
+	 * Options section for IP filters.
+	 *
+	 * @return void
+	 */
+	public static function section_ip(): void {
+		print '<p>';
+		esc_html_e( 'These filter rules are applied to the IP address of the visitor.', 'statify-blacklist' );
+		print '</p><p>';
+		esc_html_e( 'Cron execution is not possible for IP filter, because IP addresses are not stored.', 'statify-blacklist' );
+		print '</p>';
+	}
+
+	/**
 	 * Option for activating the live IP filter.
 	 *
 	 * @return void
 	 */
-	public static function option_ip_active() {
+	public static function option_ip_active(): void {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'Activate live filter', 'statify-blacklist' ); ?></legend>
@@ -404,8 +439,6 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 			</label>
 			<p class="description">
 				<?php esc_html_e( 'Filter at time of tracking, before anything is stored', 'statify-blacklist' ); ?>
-				<br>
-				<?php esc_html_e( 'Cron execution is not possible for IP filter, because IP addresses are not stored.', 'statify-blacklist' ); ?>
 			</p>
 		</fieldset>
 		<?php
@@ -416,7 +449,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_ip_blacklist() {
+	public static function option_ip_blacklist(): void {
 		?>
 		<textarea id="statifyblacklist-ip-blacklist" name="statify-blacklist[ip][blacklist]" cols="40" rows="5"><?php
 		print esc_html( implode( "\r\n", StatifyBlacklist::$options['ip']['blacklist'] ) );
@@ -429,11 +462,24 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	}
 
 	/**
+	 * Options section for user agent filters.
+	 *
+	 * @return void
+	 */
+	public static function section_ua(): void {
+		print '<p>';
+		esc_html_e( 'These filter rules are applied to the user agent (browser) identifier of the request.', 'statify-blacklist' );
+		print '</p><p>';
+		esc_html_e( 'Cron execution is not possible for user agent filter, because the user agent is stored.', 'statify-blacklist' );
+		print '</p>';
+	}
+
+	/**
 	 * Option for activating the live user agent filter.
 	 *
 	 * @return void
 	 */
-	public static function option_ua_active() {
+	public static function option_ua_active(): void {
 		?>
 		<label for="statifyblacklist-ua-active">
 			<input id="statifyblacklist-ua-active" name="statify-blacklist[ua][active]" type="checkbox" value="1" <?php checked( StatifyBlacklist::$options['ua']['active'], 1 ); ?>>
@@ -442,8 +488,6 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 
 		<p class="description">
 			<?php esc_html_e( 'Filter at time of tracking, before anything is stored', 'statify-blacklist' ); ?>
-			<br>
-			<?php esc_html_e( 'Cron execution is not possible for user agent filter, because the user agent is stored.', 'statify-blacklist' ); ?>
 		</p>
 		<?php
 	}
@@ -453,7 +497,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_ua_regexp() {
+	public static function option_ua_regexp(): void {
 		?>
 		<select id="statifyblacklist-ua-regexp" name="statify-blacklist[ua][regexp]">
 			<option value="<?php print esc_attr( StatifyBlacklist::MODE_NORMAL ); ?>" <?php selected( StatifyBlacklist::$options['ua']['regexp'], StatifyBlacklist::MODE_NORMAL ); ?>>
@@ -484,7 +528,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function option_ua_blacklist() {
+	public static function option_ua_blacklist(): void {
 		?>
 		<textarea name="statify-blacklist[ua][blacklist]" id="statifyblacklist-ua-blacklist" cols="40" rows="5"><?php
 		print esc_html( implode( "\r\n", StatifyBlacklist::$options['ua']['blacklist'] ) );
@@ -503,7 +547,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return array Validated and sanitized options.
 	 */
-	public static function sanitize_options( $options ) {
+	public static function sanitize_options( array $options ): array {
 		// Extract filter lists from multi-line inputs.
 		$referer = self::parse_multiline_option( $options['referer']['blacklist'] );
 		$target  = self::parse_multiline_option( $options['target']['blacklist'] );
@@ -553,7 +597,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @since 1.7.0
 	 */
-	private static function sanitize_referer_options( &$options ) {
+	private static function sanitize_referer_options( array &$options ): void {
 		$referer_given   = $options['blacklist'];
 		$referer_invalid = array();
 		if ( StatifyBlacklist::MODE_NORMAL === $options['regexp'] ) {
@@ -596,7 +640,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @since 1.7.0
 	 */
-	private static function sanitize_target_options( &$options ) {
+	private static function sanitize_target_options( array &$options ): void {
 		$target_given     = $options['blacklist'];
 		$target_sanitized = $target_given;
 		if ( StatifyBlacklist::MODE_REGEX === $options['regexp'] || StatifyBlacklist::MODE_REGEX_CI === $options['regexp'] ) {
@@ -626,7 +670,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @since 1.7.0
 	 */
-	private static function sanitize_ip_options( &$options ) {
+	private static function sanitize_ip_options( array &$options ): void {
 		$given_ip             = $options['blacklist'];
 		$sanitized_ip         = self::sanitize_ips( $given_ip );
 		$ip_diff              = array_diff( $given_ip, $sanitized_ip );
@@ -647,14 +691,14 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	/**
 	 * Sanitize URLs and remove empty results.
 	 *
-	 * @param array $urls given array of URLs.
+	 * @param string[] $urls given array of URLs.
 	 *
-	 * @return array  sanitized array.
+	 * @return string[] sanitized array.
 	 *
 	 * @since 1.1.1
 	 * @since 1.7.0 moved from StatifyBlacklist_Admin to StatifyBlacklist_Settings.
 	 */
-	private static function sanitize_urls( $urls ) {
+	private static function sanitize_urls( array $urls ): array {
 		return array_flip(
 			array_filter(
 				array_map(
@@ -670,14 +714,14 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	/**
 	 * Sanitize IP addresses with optional CIDR notation and remove empty results.
 	 *
-	 * @param array $ips given array of URLs.
+	 * @param string[] $ips given array of URLs.
 	 *
-	 * @return array  sanitized array.
+	 * @return string[] sanitized array.
 	 *
 	 * @since 1.4.0
 	 * @since 1.7.0 moved from StatifyBlacklist_Admin to StatifyBlacklist_Settings.
 	 */
-	private static function sanitize_ips( $ips ) {
+	private static function sanitize_ips( array $ips ): array {
 		return array_values(
 			array_unique(
 				array_filter(
@@ -706,21 +750,21 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	/**
 	 * Validate regular expressions, i.e. remove duplicates and empty values and validate others.
 	 *
-	 * @param array $expressions Given pre-sanitized array of regular expressions.
+	 * @param string[] $expressions Given pre-sanitized array of regular expressions.
 	 *
-	 * @return array Array of invalid expressions.
+	 * @return string[] Array of invalid expressions.
 	 *
 	 * @since 1.5.0 #13
 	 * @since 1.7.0 moved from StatifyBlacklist_Admin to StatifyBlacklist_Settings.
 	 */
-	private static function sanitize_regex( $expressions ) {
+	private static function sanitize_regex( array $expressions ): array {
 		return array_filter(
 			array_flip( $expressions ),
 			function ( $re ) {
 				// Check of preg_match() fails (warnings suppressed).
 
 				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				return false === @preg_match( StatifyBlacklist::regex( $re, false ), null );
+				return false === @preg_match( StatifyBlacklist::regex( $re, false ), '' );
 			}
 		);
 	}
@@ -732,7 +776,7 @@ class StatifyBlacklist_Settings extends StatifyBlacklist {
 	 *
 	 * @return array Parsed options.
 	 */
-	private static function parse_multiline_option( $raw ) {
+	private static function parse_multiline_option( string $raw ): array {
 		if ( empty( trim( $raw ) ) ) {
 			return array();
 		} else {

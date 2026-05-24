@@ -26,7 +26,7 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	 *
 	 * @since 1.5.0
 	 */
-	public static function init() {
+	public static function init(): void {
 		// Add actions.
 		add_action( 'wpmu_new_blog', array( 'StatifyBlacklist_System', 'install_site' ) );
 		add_action( 'delete_blog', array( 'StatifyBlacklist_System', 'uninstall_site' ) );
@@ -36,10 +36,7 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 			add_action( 'network_admin_menu', array( 'StatifyBlacklist_Admin', 'add_menu_page' ) );
 			add_filter(
 				'network_admin_plugin_action_links',
-				array(
-					'StatifyBlacklist_Admin',
-					'plugin_actions_links',
-				),
+				array( 'StatifyBlacklist_Admin', 'plugin_actions_links' ),
 				10,
 				2
 			);
@@ -55,7 +52,7 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	 *
 	 * @since 1.0.0
 	 */
-	public static function add_menu_page() {
+	public static function add_menu_page(): void {
 		$title = __( 'Statify Filter', 'statify-blacklist' );
 		if ( self::$multisite ) {
 			add_options_page(
@@ -79,14 +76,14 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	/**
 	 * Add plugin meta links
 	 *
-	 * @param array  $links Registered links.
-	 * @param string $file  The filename.
+	 * @param string[] $links Registered links.
+	 * @param string   $file  The filename.
 	 *
-	 * @return array  Merged links.
+	 * @return string[] Merged links.
 	 *
 	 * @since 1.0.0
 	 */
-	public static function plugin_meta_link( $links, $file ) {
+	public static function plugin_meta_link( array $links, string $file ): array {
 		if ( STATIFYBLACKLIST_BASE === $file ) {
 			$links[] = '<a href="https://github.com/stklcode/statify-blacklist">GitHub</a>';
 		}
@@ -97,14 +94,14 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	/**
 	 * Add plugin action links.
 	 *
-	 * @param array  $links Registered links.
-	 * @param string $file  The filename.
+	 * @param string[] $links Registered links.
+	 * @param string   $file  The filename.
 	 *
-	 * @return array  Merged links.
+	 * @return string[] Merged links.
 	 *
 	 * @since 1.0.0
 	 */
-	public static function plugin_actions_links( $links, $file ) {
+	public static function plugin_actions_links( array $links, string $file ): array {
 		$base = self::$multisite ? network_admin_url( 'settings.php' ) : admin_url( 'options-general.php' );
 
 		if ( STATIFYBLACKLIST_BASE === $file && current_user_can( 'manage_options' ) ) {
@@ -124,13 +121,13 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	 *
 	 * @global wpdb $wpdb WordPress database.
 	 */
-	public static function cleanup_database() {
+	public static function cleanup_database(): void {
 		// Check user permissions.
-		if ( ! current_user_can( 'manage_options' ) && ! ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+		if ( ! current_user_can( 'manage_options' ) && ! wp_doing_cron() ) {
 			die( esc_html__( 'Are you sure you want to do this?', 'statify-blacklist' ) );
 		}
 
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+		if ( wp_doing_cron() ) {
 			$clean_ref = ( 1 === self::$options['referer']['cron'] );
 			$clean_trg = ( 1 === self::$options['target']['cron'] );
 		} else {
@@ -200,13 +197,13 @@ class StatifyBlacklist_Admin extends StatifyBlacklist {
 	/**
 	 * Sanitize URLs and remove empty results.
 	 *
-	 * @param array $urls given array of URLs.
+	 * @param string[] $urls given array of URLs.
 	 *
-	 * @return array  sanitized array.
+	 * @return string[] sanitized array.
 	 *
 	 * @since 1.1.1
 	 */
-	private static function sanitize_urls( $urls ) {
+	private static function sanitize_urls( array $urls ): array {
 		return array_flip(
 			array_filter(
 				array_map(

@@ -3,21 +3,22 @@
  * Statify Filter
  *
  * @package     PluginPackage
- * @author      Stefan Kalscheuer <stefan@stklcode.de>
+ * @author      Stefan Kalscheuer
  * @license     GPL-2.0+
  *
  * @wordpress-plugin
  * Plugin Name:       Statify Filter
  * Plugin URI:        https://wordpress.org/plugins/statify-blacklist/
- * Description:       Extension for the Statify plugin to add customizable filters. (formerly "Statify Blacklist)
- * Version:           1.7.2
- * Requires at least: 4.7
- * Requires PHP:      5.5
- * Requires Plugins:  statify
+ * Description:       Extension for the Statify plugin to add customizable filters. (formerly "Statify Blacklist")
+ * Version:           1.8.0
+ * Requires at least: 5.1
+ * Requires PHP:      7.4
  * Author:            Stefan Kalscheuer (@stklcode)
  * Author URI:        https://www.stklcode.de
- * Text Domain:       statify-blacklist
  * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       statify-blacklist
+ * Requires Plugins:  statify
  *
  * Statify Filter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +70,7 @@ if ( statify_blacklist_compatibility_check() ) {
  *
  * @since 1.0.0
  */
-function statify_blacklist_autoload( $class_name ) {
+function statify_blacklist_autoload( string $class_name ): void {
 	$plugin_classes = array(
 		'StatifyBlacklist',
 		'StatifyBlacklist_Admin',
@@ -93,9 +94,9 @@ function statify_blacklist_autoload( $class_name ) {
  *
  * @return boolean Whether minimum WP and PHP versions are met.
  */
-function statify_blacklist_compatibility_check() {
-	return version_compare( $GLOBALS['wp_version'], '4.7', '>=' ) &&
-		version_compare( phpversion(), '5.5', '>=' );
+function statify_blacklist_compatibility_check(): bool {
+	return version_compare( $GLOBALS['wp_version'], '5.1', '>=' ) &&
+		version_compare( phpversion(), '7.2', '>=' );
 }
 
 /**
@@ -105,7 +106,7 @@ function statify_blacklist_compatibility_check() {
  *
  * @return void
  */
-function statify_blacklist_disable() {
+function statify_blacklist_disable(): void {
 	if ( is_plugin_active( STATIFYBLACKLIST_BASE ) ) {
 		deactivate_plugins( STATIFYBLACKLIST_BASE );
 		add_action( 'admin_notices', 'statify_blacklist_disabled_notice' );
@@ -124,13 +125,13 @@ function statify_blacklist_disable() {
  *
  * @return void
  */
-function statify_blacklist_disabled_notice() {
+function statify_blacklist_disabled_notice(): void {
 	echo '<div class="notice notice-error is-dismissible"><p><strong>';
 	printf(
 		/* translators: minimum version numbers for WordPress and PHP inserted at placeholders */
 		esc_html__( 'Statify Filter requires at least WordPress %1$s and PHP %2$s.', 'statify-blacklist' ),
-		'4.7',
-		'5.5'
+		'5.1',
+		'7.2'
 	);
 	echo '<br>';
 	printf(

@@ -30,22 +30,13 @@ class StatifyBlacklist_System extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function install( $network_wide = false ) {
+	public static function install( bool $network_wide = false ): void {
 		// Create tables for each site in a network.
 		if ( $network_wide && is_multisite() ) {
-			if ( function_exists( 'get_sites' ) ) {
-				$sites = get_sites();
-			} else {
-				return;
-			}
+			$sites = get_sites( array( 'fields' => 'ids' ) );
 
 			foreach ( $sites as $site ) {
-				if ( is_array( $site ) ) {
-					$site_id = $site['blog_id'];
-				} else {
-					$site_id = $site->blog_id;
-				}
-				self::install_site( $site_id );
+				self::install_site( $site );
 			}
 
 			restore_current_blog();
@@ -66,8 +57,8 @@ class StatifyBlacklist_System extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function install_site( $site_id ) {
-		switch_to_blog( (int) $site_id );
+	public static function install_site( int $site_id ): void {
+		switch_to_blog( $site_id );
 		add_option(
 			'statify-blacklist',
 			self::default_options()
@@ -83,23 +74,14 @@ class StatifyBlacklist_System extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function uninstall() {
+	public static function uninstall(): void {
 		if ( is_multisite() ) {
 			$old = get_current_blog_id();
 
-			if ( function_exists( 'get_sites' ) ) {
-				$sites = get_sites();
-			} else {
-				return;
-			}
+			$sites = get_sites( array( 'fields' => 'ids' ) );
 
 			foreach ( $sites as $site ) {
-				if ( is_array( $site ) ) {
-					$site_id = $site['blog_id'];
-				} else {
-					$site_id = $site->blog_id;
-				}
-				self::uninstall_site( $site_id );
+				self::uninstall_site( $site );
 			}
 
 			switch_to_blog( $old );
@@ -117,9 +99,9 @@ class StatifyBlacklist_System extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function uninstall_site( $site_id ) {
+	public static function uninstall_site( int $site_id ): void {
 		$old = get_current_blog_id();
-		switch_to_blog( (int) $site_id );
+		switch_to_blog( $site_id );
 		delete_option( 'statify-blacklist' );
 		switch_to_blog( $old );
 	}
@@ -131,7 +113,7 @@ class StatifyBlacklist_System extends StatifyBlacklist {
 	 *
 	 * @return void
 	 */
-	public static function upgrade() {
+	public static function upgrade(): void {
 		self::update_options();
 		// Check if config array is not associative (pre 1.2.0).
 		if ( array_keys( self::$options['referer'] ) === range( 0, count( self::$options['referer'] ) - 1 ) ) {
